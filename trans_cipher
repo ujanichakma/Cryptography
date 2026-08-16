@@ -1,0 +1,59 @@
+def ceaser(text, shift):
+    result = ""
+
+    for c in text:
+        if c.isalpha():
+            if c.isupper():
+                base = ord('A')
+            else:
+                base = ord('a')
+            result += chr((ord(c) - base + shift) % 26 + base)
+        else:
+            result += c 
+    return result
+
+#Transposition encryption
+def trans_encrypt(text, width):
+    while len(text) % width != 0:
+        text += "_"
+
+    cipher = ""
+
+    for col in range(width):
+        for i in range(col, len(text),width):
+            cipher += text[i]
+
+    return cipher
+
+#Transpositio decryption
+def trans_decrypt(cipher, width):
+    rows = len(cipher) // width
+    text = ""
+
+    for row in range(rows):
+        for col in range(width):
+            text += cipher[col*rows + row]
+    return text.rstrip("_")        
+
+#Main program
+plain_text = "Computer Science"
+shift = 3
+width = 5
+
+print("Original text : \n", plain_text)
+
+#Ceaser encryption
+ceaser_enc = ceaser(plain_text, shift)
+print("Ceaser cipher encrypted text : \n", ceaser_enc)
+
+#Transposition encryption
+trans_enc = trans_encrypt(ceaser_enc, width)
+print("After Transposition encryption: \n", trans_enc)
+
+#Transposition decryption
+trans_dec = trans_decrypt(trans_enc, width)
+print("After Transposition decryption : \n", trans_dec)
+
+#Ceaser decryption
+final = ceaser(trans_dec, -shift)
+print("Final Decrypted text : \n", final)
